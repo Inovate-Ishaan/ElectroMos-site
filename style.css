@@ -259,7 +259,7 @@ a:hover {
 code,
 pre {
   font-family: var(--font-family-mono);
-  font-size: calc(var(--font-size-base) * 0.95);
+  font-size: calc(var(--font-size-base) * 1.05);
   background-color: var(--color-secondary);
   border-radius: var(--radius-sm);
 }
@@ -975,7 +975,7 @@ section {
 
 .section-subtitle {
     text-align: center;
-    font-size: var(--font-size-lg);
+    font-size: clamp(1rem, 3vw, 2rem);
     color: var(--color-text-secondary);
     margin-bottom: var(--space-32);
     max-width: 600px;
@@ -983,32 +983,6 @@ section {
     margin-right: auto;
 }
 
-/* Events Section */
-
-
-.events-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-24);
-  margin-top: var(--space-32);
-}
-.event-card {
-  width: 320px; /* Fixed width for consistent layout */
-  max-width: 90%;
-}
-
-
-.event-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: var(--radius-lg);
-    padding: var(--space-24);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
 .contact-grid.single-column {
   display: flex;
   justify-content: center;
@@ -1074,6 +1048,56 @@ section {
   background-color: var(--color-primary-dark);
 }
 
+
+
+/* Events Section */
+
+.events-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    width : 100%;
+}
+
+.events-grid {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--space-24);
+  margin-top: var(--space-32);
+  transition: transform 0.5s ease;
+}
+
+.event-card {
+    min-width: 320px; /* Fixed width for consistent layout */
+    max-width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  
+}
+
+.past-event {
+    filter : grayscale(80%);
+    min-width: 320px; /* Fixed width for consistent layout */
+    max-width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+}
+
+
+/*
 .event-card::before {
     content: '';
     position: absolute;
@@ -1083,16 +1107,17 @@ section {
     height: 2px;
     background: linear-gradient(90deg, var(--color-primary), rgba(31, 184, 205, 0.5));
 }
+*/
 
 .event-card:hover {
-    transform: translateY(-10px);
+    transform: scale(1.05);
     box-shadow: 0 20px 40px rgba(31, 184, 205, 0.2);
     border-color: rgba(31, 184, 205, 0.4);
 }
 
 .event-image {
     width: 100%;
-    height: 200px;
+    max-width: 400px;
     object-fit: cover;
     border-radius: var(--radius-base);
     margin-bottom: var(--space-16);
@@ -1141,13 +1166,14 @@ section {
 }
 
 .highlights-container {
-    display: flex;
+    display: flex;   
     transition: transform 0.5s ease;
 }
 
 .highlight-card {
+  position: relative;
     min-width: 350px;
-    margin-right: var(--space-24);
+    padding: var(--space-24);
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -1214,7 +1240,7 @@ section {
     gap: var(--space-8);
 }
 
-.dot {
+.eventDot , .highDot, .articleDot{
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -1223,7 +1249,7 @@ section {
     transition: all 0.3s ease;
 }
 
-.dot.active {
+.eventDot.active , .highDot.active, .articleDot.active {
     background: var(--color-primary);
     box-shadow: 0 0 10px rgba(31, 184, 205, 0.5);
 }
@@ -1526,6 +1552,54 @@ section {
 .project-link:hover {
     text-shadow: 0 0 8px rgba(31, 184, 205, 0.6);
 }
+
+
+/* Articles Section */
+
+.articles-carousel{
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    width : 100%;
+}
+
+.articles-grid{
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--space-24);
+  margin-top: var(--space-32);
+  transition: transform 0.5s ease;
+}
+
+.article-card{
+   min-width: 320px; /* Fixed width for consistent layout */
+    max-width: 100%;
+    
+    background: rgba(23, 22, 22, 0.127);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+ 
+}
+
+.article-image{
+    width: 100%;
+    max-width: 400px;
+    object-fit: cover;
+    border-radius: var(--radius-base);
+    margin-bottom: var(--space-16);
+
+}
+
+.article-card:hover{
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(31, 184, 205, 0.2);
+}
+
 
 /* Component Issue Section */
 

@@ -38,7 +38,7 @@
                 <a href="#highlights" class="nav-link">Highlights</a>
                 <a href="#simulations" class="nav-link">Simulations</a>
                 <a href="#projects" class="nav-link">Projects</a>
-                <a href="#component-issue" class="nav-link">Components</a>
+                <a href="#articles" class="nav-link">Articles</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </div>
 
@@ -82,10 +82,17 @@
         <div class="container">
             <h2 class="section-title">Upcoming Events</h2>
             <p class="section-subtitle">Join us for exciting workshops, competitions, and tech talks</p>
-            
-            <div class="events-grid" id="events-grid">
+            <div class = "events-carousel">
+              <div class="events-grid" id="events-grid">
                 <!-- Events will be populated by JavaScript -->
+              </div>
+            <div class="carousel-nav">
+                    <button class="carousel-btn prev" id="events-prev">&lt;</button>
+                    <div class="carousel-dots" id="events-dots"></div>
+                    <button class="carousel-btn next" id="events-next">&gt;</button>
             </div>
+
+          </div>
         </div>
     </section>
 
@@ -238,47 +245,54 @@
         </div>
     </section>
 
-<!-- Component Issue Section -->
-<section id="component-issue" class="component-issue-section">
-  <div class="container">
-    <div class="component-card">
-      <h2 class="section-title">Component Request</h2>
-      <p class="section-subtitle">
-        Need electronic components for your project? We’ve got you covered!
-      </p>
 
-      <!-- three numbered steps -->
-      <div class="component-instructions">
-        <div class="instruction-item">
-          <span class="instruction-number">1</span>
-          <h4 class="instruction-title">Tell us about your project</h4>
-          <p class="instruction-text">
-            Submit a few details—what you’re building and why.
-          </p>
-        </div>
-        <div class="instruction-item">
-          <span class="instruction-number">2</span>
-          <h4 class="instruction-title">Select your components</h4>
-          <p class="instruction-text">
-            Pick the parts you need and how many of each.
-          </p>
-        </div>
-        <div class="instruction-item">
-          <span class="instruction-number">3</span>
-          <h4 class="instruction-title">We’ll handle the rest</h4>
-          <p class="instruction-text">
-            We’ll try to arrange your components and notify you accordingly.
-          </p>
-        </div>
-      </div>
+    <!-- Articles section-->
+     <section id="articles" class="articles-section">
+        <div class="container">
+            <h2 class="section-title">Articles</h2>
+            <p class="section-subtitle">Have a look at these interesting articles</p>
+            <div class="articles-carousel">
+                <div class="articles-grid" id="articles-grid">
+                    <!--Articles will be popualted by javascript-->
+                </div>
 
-      <button class="btn btn-primary component-btn" onclick="openComponentForm()">
-        Request Components
-      </button>
-    </div>
-  </div>
-</section>
+                    <div class="carousel-nav">
+                    <button class="carousel-btn prev" id="articles-prev">&lt;</button>
+                    <div class="carousel-dots" id="articles-dots"></div>
+                    <button class="carousel-btn next" id="articles-next">&gt;</button>
+                </div>
 
+            </div>
+             
+        </div>
+
+            <!--JS code for populating articles, later to be shifted in app.js file-->
+<!--            <script>
+                fetch("articles.json")
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById("articles-grid");
+                    data.forEach(article => {
+                    container.innerHTML += `
+                        <div class="article-card">
+                        <img src="${article.thumbnail}" alt="${article.title}">
+                        <h3>${article.title}</h3>
+                        <p>${article.description}</p>
+                        <a href="article.html?id=${article.id}">Read more</a>
+                        </div>
+                    `;
+                        // Create dot
+                        const dot = document.createElement('div');
+                        dot.className = `articleDot ${index === 0 ? 'active' : ''}`;
+                        dot.addEventListener('click', () => goToHighlight(index));
+                        dotsContainer.appendChild(dot);
+
+                    });
+                });
+            </script>
+     </section>
+
+     -->
 
 <!-- Contact Section -->
 <section id="contact" class="contact-section">

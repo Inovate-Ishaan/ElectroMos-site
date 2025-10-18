@@ -1,21 +1,32 @@
 // Application Data
 const eventsData = [
+        {
+        id: 7,
+        title: "Digital Design Fundamentals by ElectroMos Club",
+        date: "2025-10-16",
+        description: "A 2-day interactive and example-driven session meant to strengthen the key topics that are essential for the upcoming VLSI Workshop.", 
+        image: "images/digital_design_session.png",
+        category: "session",
+        status: "upcoming",
+    },
+    {
+        id: 6,
+        title: "VLSI Workshop: From Digital Electronics to GDS Flow",
+        date: "2025-10-25",  
+        description: "A 2-day hands-on workshop covering fundamentals of digital electronics all the way to the VLSI GDS flow, with alumni interaction sessions.",
+        image: "images/vlsiWorkshop.png", 
+        category: "workshop",
+        status: "upcoming",
+    },
     {
         id: 5,
         title: "Intra IIT – IoT Practice Challenge",
         date: "2025-08-21",  
         description: "A practice challenge for the upcoming Inter-IIT Tech Meet, focusing on IoT problem statements.",
         image: "images/Intraiit.png", 
-        category: "hackathon"
+        category: "hackathon",
+        status: "past",
     },
-    {
-        id: 6,
-        title: "VLSI Workshop: From Digital Electronics to GDS Flow",
-        date: "2025-10-11",  
-        description: "A 2-day hands-on workshop covering fundamentals of digital electronics all the way to the VLSI GDS flow, with alumni interaction sessions.",
-        image: "images/vlsiWorkshop.png", 
-        category: "workshop"
-    }
 ];
 
 const projectsData = [
@@ -133,8 +144,13 @@ const highlightsData = [
     }
 ];
 
+//articles data
+let articlesData = [];
+
 // Global Variables
 let currentHighlight = 0;
+let currentEvent = 0;
+let currentArticle = 0;
 
 let signalAnimationId;
 let rcAnimationId;
@@ -184,6 +200,7 @@ function initializeApp() {
     renderEvents();
     renderProjects();
     renderHighlights();
+    renderArticles();
     setupSimulations();
     setupScrollAnimations();
     setupCarousel();
@@ -216,16 +233,13 @@ function setupEventListeners() {
     });
 
     // Navigation links
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = link.getAttribute('href').substring(1);
-            scrollToSection(targetId);
-            navMenu.classList.remove('active');
-        });
-    });
-
-
+//    document.querySelectorAll('.nav-link').forEach(link => {
+//        link.addEventListener('click', (e) => {
+//            e.preventDefault();
+//            const targetId = link.getAttribute('href').substring(1);         scrollToSection(targetId);
+//          navMenu.classList.remove('active');
+//        });
+//    });
 
 
     // Modal close
@@ -244,27 +258,56 @@ function setupEventListeners() {
 
 // Dark Mode Toggle with Particle Effect
 
+
+//handling the case when menu links are clicked outside the home page
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', e => {
+    //const sectionId = link.getAttribute('data-section');
+
+    // If we're on the home page, intercept click and smooth scroll
+    if (document.querySelector('.dark-theme')) {
+      e.preventDefault(); // stop default jump
+      const targetId = link.getAttribute('href').substring(1);
+      const navMenu = document.getElementById('nav-menu');
+      scrollToSection(targetId);
+      navMenu.classList.remove('active');
+     
+    }
+    // else → normal <a> behavior happens (redirect)
+  });
+});
+
 // Smooth Scrolling
 function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    const navHeight = document.querySelector('.navbar').offsetHeight;
-    const targetPosition = section.offsetTop - navHeight - 20;
-    
-    window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-    });
+    if (document.querySelector('.dark-theme')) {  //smooth scroll only if on home page, dark-theme was the class of the body tag
+        const section = document.getElementById(sectionId);
+        if (!section) return; //handling error of section being None
+        const navHeight = document.querySelector('.navbar').offsetHeight;
+        const targetPosition = section.offsetTop - navHeight - 20;
+        
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+    }
 }
+
 
 // Render Events
 function renderEvents() {
     const eventsGrid = document.getElementById('events-grid');
+    const dotsContainer = document.getElementById('events-dots')
     eventsGrid.innerHTML = '';
+    dotsContainer.innerHTML = '';
     
     eventsData.forEach((event, index) => {
         const eventCard = document.createElement('div');
         eventCard.className = 'event-card fade-in-up';
         eventCard.style.animationDelay = `${index * 0.1}s`;
+
+        if (event.status == "past") {
+            eventCard.classList.add('past-event');
+        }
         
         const eventDate = new Date(event.date).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -281,6 +324,16 @@ function renderEvents() {
         `;
         
         eventsGrid.appendChild(eventCard);
+
+
+        // Create dot
+        const dot = document.createElement('div');
+        dot.className = `eventDot ${index === 0 ? 'active' : ''}`;
+        dot.addEventListener('click', () => goToEvent(index));
+        dotsContainer.appendChild(dot);
+
+
+
     });
 }
 
@@ -318,10 +371,9 @@ projectCard.innerHTML = `
   </div>
 `;
 
-
-
         
         projectsGrid.appendChild(projectCard);
+
     });
 }
 
@@ -352,23 +404,69 @@ function renderHighlights() {
         
         // Create dot
         const dot = document.createElement('div');
-        dot.className = `dot ${index === 0 ? 'active' : ''}`;
+        dot.className = `highDot ${index === 0 ? 'active' : ''}`;
         dot.addEventListener('click', () => goToHighlight(index));
         dotsContainer.appendChild(dot);
     });
 }
 
+//render Articles
+function renderArticles(){
+        // reading the articles.json file and assigning it as a const
+        const articlesGrid = document.getElementById('articles-grid');
+        const dotsContainer = document.getElementById('articles-dots');
+        articlesGrid.innerHTML = '';
+        dotsContainer.innerHTML = '';
+
+        fetch("articles.json")
+        .then(response => {
+            if (!response.ok) throw new Error("Failed to load articles.json");
+            return response.json();
+        })
+        .then(data => {
+            articlesData = data;
+            console.log("Articles loaded:", articles);
+
+            //render cards code
+           
+                
+                data.forEach((article, index) => {
+                articlesGrid.innerHTML += `
+                    <div class="article-card">
+                    <img src="${article.thumbnail}" alt="${article.title}" class="article-image">
+                    <h3>${article.title}</h3>
+                    <p>${article.description}</p>
+                    <a href="article.html?id=${article.id}" target="_blank">Read more</a>
+                    </div>
+                `;
+
+
+                    // Create dot
+                    const dot = document.createElement('div');
+                    dot.className = `articleDot ${index === 0 ? 'active' : ''}`;
+                    dot.addEventListener('click', () => goToArticle(index));
+                    dotsContainer.appendChild(dot);
+
+                });
+
+            
+        })
+        .catch(err => console.error(err));
+
+}
+
 // Carousel Setup
 function setupCarousel() {
-    const prevBtn = document.getElementById('highlights-prev');
-    const nextBtn = document.getElementById('highlights-next');
+    //for highlights
+    const prevBtnHighlight = document.getElementById('highlights-prev');
+    const nextBtnHighlight = document.getElementById('highlights-next');
     
-    prevBtn.addEventListener('click', () => {
+    prevBtnHighlight.addEventListener('click', () => {
         currentHighlight = currentHighlight > 0 ? currentHighlight - 1 : highlightsData.length - 1;
         updateCarousel();
     });
     
-    nextBtn.addEventListener('click', () => {
+    nextBtnHighlight.addEventListener('click', () => {
         currentHighlight = currentHighlight < highlightsData.length - 1 ? currentHighlight + 1 : 0;
         updateCarousel();
     });
@@ -378,6 +476,42 @@ function setupCarousel() {
         currentHighlight = currentHighlight < highlightsData.length - 1 ? currentHighlight + 1 : 0;
         updateCarousel();
     }, 5000);
+
+
+    //for events
+    const prevBtnEvent = document.getElementById('events-prev');
+    const nextBtnEvent = document.getElementById('events-next');
+    
+    prevBtnEvent.addEventListener('click', () => {
+        currentEvent = currentEvent > 0 ? currentEvent - 1 : eventsData.length - 1;
+        updateCarousel();
+    });
+    
+    nextBtnEvent.addEventListener('click', () => {
+        currentEvent = currentEvent < eventsData.length - 1 ? currentEvent + 1 : 0;
+        updateCarousel();
+    });
+
+    //for articles
+    const prevBtnArticle = document.getElementById('articles-prev')
+    const nextBtnArticle = document.getElementById('articles-next')
+
+    prevBtnArticle.addEventListener('click', () => {
+        currentArticle = currentArticle > 0 ? currentArticle - 1 : articlesData.length - 1;
+        updateCarousel();
+    });
+
+    nextBtnArticle.addEventListener('click', () => {
+        currentArticle =currentArticle< articlesData.length - 1 ? currentArticle + 1 : 0;
+        updateCarousel();
+    });
+
+    // Auto-scroll carousel
+    setInterval(() => {
+        currentArticle = currentArticle < articlesData.length - 1 ? currentArticle + 1 : 0;
+        updateCarousel();
+    }, 5000);
+    
 }
 
 function goToHighlight(index) {
@@ -385,18 +519,60 @@ function goToHighlight(index) {
     updateCarousel();
 }
 
+
+function goToEvent(index) {
+    currentEvent = index;
+    updateCarousel();
+}
+
+function goToArticle(index) {
+    currentArticle = index;
+    updateCarousel();
+}
+
 function updateCarousel() {
-    const container = document.getElementById('highlights-container');
-    const dots = document.querySelectorAll('.dot');
+    //for highlights
+    const highlightContainer = document.getElementById('highlights-container');
+    const highlightDots = document.querySelectorAll('.highDot');
     
-    const cardWidth = 374; // 350px + 24px margin
-    const offset = -currentHighlight * cardWidth;
+    const cardWidthHighlight = 300; // 350px + 24px margin
+    const offsetHighlight = -currentHighlight * cardWidthHighlight;
     
-    container.style.transform = `translateX(${offset}px)`;
+    highlightContainer.style.transform = `translateX(${offsetHighlight}px)`;
     
-    dots.forEach((dot, index) => {
+    highlightDots.forEach((dot, index) => {
         dot.classList.toggle('active', index === currentHighlight);
     });
+
+
+    //for events
+    const eventsGrid = document.getElementById('events-grid');
+    const eventDots = document.querySelectorAll('.eventDot');
+    
+    const cardWidthEvent = 344; // 320px + 24px margin
+    const offsetEvent = -currentEvent * cardWidthEvent;
+    
+    eventsGrid.style.transform = `translateX(${offsetEvent}px)`;
+    
+    eventDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentEvent);
+    });
+
+     
+    //for articles
+    const articlesGrid = document.getElementById('articles-grid');
+    const articleDots = document.querySelectorAll('.articleDot');
+    
+    const cardWidthArticle = 344; // 320px + 24px margin
+    const offsetArticle = -currentArticle * cardWidthArticle;
+    
+    articlesGrid.style.transform = `translateX(${offsetArticle}px)`;
+    
+    articleDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentArticle);
+    });
+
+
 }
 
 // Simulations Setup

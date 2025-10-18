@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<!--
+	<div id="loader">
+  <div class="loader-content">
+    <h1 class="loader-title">ELECTROMOS</h1>
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+  </div>
+</div>  -->
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Electromos - Articles</title>
+        <script src="app.js"></script>
+        <link rel="stylesheet" href = "style.css">
+        <link rel="stylesheet" href="style_articles.css">
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+        </style>
+    </head>
+
+<body class = "dark-theme">
+
+  <video autoplay muted loop playinline id="bg-video">
+    <source src="mybg.mp4" type="video/mp4">
+    video tag not supported
+  </video>
+
+  <!--Nav bar-->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <img src="images/logo.png" alt="Club Logo" class="logo-img">
+        <span class="logo-text">ELECTROMOS</span>
+      </div>
+    
+      <div class="nav-menu" id="nav-menu">
+        <a href="index.html#home" class="nav-link">Home</a>
+        <a href="index.html#events" class="nav-link">Events</a>
+        <a href="index.html#highlights" class="nav-link">Highlights</a>
+        <a href="index.html#simulations" class="nav-link">Simulations</a>
+        <a href="index.html#projects" class="nav-link">Projects</a>
+        <a href="index.html#contact" class="nav-link">Contact</a>
+      </div>
+
+    <div class="nav-controls">
+
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    </div>
+  </nav>
+
+  <section id="article" class="article">
+    <div id="article-content" class="article-content"></div>
+
+<script>
+  // Extract ?id= from URL
+  const params = new URLSearchParams(window.location.search);
+  const articleId = params.get("id");
+
+  fetch("articles.json")
+    .then(res => res.json())
+    .then(data => {
+     
+      const article = data.find(a => a.id === articleId);
+
+      if (!article) {
+        document.getElementById("article-content").innerHTML = "<h2>Article not found.</h2>";
+        return;
+      }
+
+      fetch(article.content)
+        .then(res => res.text())
+        .then(html => {
+     
+          document.title = article.title;
+          document.getElementById("article-content").innerHTML = `
+            <h2 class="section-title">${article.title}</h2>
+            <p class="section-subtitle">${article.description}</p>
+            <p id="author-date"><em>By ${article.author} | ${article.date}</em></p>
+            <div class="article-body-container">
+              <img src="${article.thumbnail}" alt="${article.title}" class="image_in_article">
+              <div>${html}</div>
+            </div>
+          `;
+        })
+        .catch(err => {
+          console.error("Error loading article HTML:", err);
+          document.getElementById("article-content").innerHTML = "<h2>Failed to load article content.</h2>";
+        });
+    })
+    .catch(err => {
+      console.error("Error loading articles.json:", err);
+      document.getElementById("article-content").innerHTML = "<h2>Failed to load articles list.</h2>";
+    });
+</script>
+
+</section>
+
+  
+
+</body>
+
+</html>

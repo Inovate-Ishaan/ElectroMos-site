@@ -1,0 +1,11 @@
+[
+  {
+    "id": "tactility",
+    "title": "Tactility: App-Based OS for Your ESP32",
+    "thumbnail": "images/tactility.webp",
+    "author": "Electromos Team",
+    "date": "2025-10-12",
+    "description": "Meet Tactility: The App-Based Operating System for Your ESP32",
+    "content": "article_content/tactility.html"
+  }
+]
