@@ -1,5 +1,23 @@
 // Application Data
 const eventsData = [
+	    {
+        id: "9",
+        title: "The Mystery Box Challenge (Meraz 6.0)",
+        date: "2025-11-15",
+        description: "Create something innovative from a random mix of sensors, microcontrollers, and conectors before times run out...",
+        image: "images/mystery_box.jpg",
+        category: "meraz event",
+        status:"upcoming",
+    },
+    {
+        id: "8",
+        title: "The FPGA Design Contest (Meraz 6.0)",
+        date: "2025-11-12",
+        description: "A two-round battle of pure ruthless digital design (12th and 16th Nov, 2025) - a contest to be held during Meraz 6.0.",
+        image: "images/FPGA_contest.jpg",
+        category: "meraz event",
+        status:"upcoming",
+    },
         {
         id: 7,
         title: "Digital Design Fundamentals by ElectroMos Club",
@@ -106,6 +124,12 @@ const projectsData = [
 
 
 const highlightsData = [
+	    {
+        id: 12,
+        title: "VLSI Workshop: From Digital Electronics to GDS Flow",
+        description: "2-day workshop covering the fundamentals of VLSI with hands-on experience.",
+        image: "images/vlsi_workshop.jpeg",
+    },
     {
         id: 6,
         title: "Workshop on Bluetooth, WiFi and RF Module. ",
