@@ -168,6 +168,17 @@ const highlightsData = [
     }
 ];
 
+const competitionsData = [
+	    {
+        id: "1",
+        title: "Kryptos ROUND2",
+        date: "2026-03-25",
+        description: "The signature event of ELECTROMOS, coming soon...",
+        image: "images/coming_soon.png",
+        category: "Competition",
+        status:"upcoming",
+    }]
+
 //articles data
 let articlesData = [];
 
@@ -175,7 +186,7 @@ let articlesData = [];
 let currentHighlight = 0;
 let currentEvent = 0;
 let currentArticle = 0;
-
+let currentCompetition = 0;
 let signalAnimationId;
 let rcAnimationId;
 
@@ -225,6 +236,7 @@ function initializeApp() {
     renderProjects();
     renderHighlights();
     renderArticles();
+    renderCompetitions();
     setupSimulations();
     setupScrollAnimations();
     setupCarousel();
@@ -458,8 +470,8 @@ function renderArticles(){
                 articlesGrid.innerHTML += `
                     <div class="article-card">
                     <img src="${article.thumbnail}" alt="${article.title}" class="article-image">
-                    <h3>${article.title}</h3>
-                    <p>${article.description}</p>
+                    <h3 class="articles-title">${article.title}</h3>
+                    <p class="articles-description">${article.description}</p>
                     <a href="article.html?id=${article.id}" target="_blank">Read more</a>
                     </div>
                 `;
@@ -478,6 +490,38 @@ function renderArticles(){
         .catch(err => console.error(err));
 
 }
+
+// Render Competitions
+function renderCompetitions() {
+    const CompetitionsContainer = document.getElementById('competitions-container');
+    const dotsContainer = document.getElementById('competitions-dots');
+    
+    CompetitionsContainer.innerHTML = '';
+    dotsContainer.innerHTML = '';
+    
+    competitionsData.forEach((competition, index) => {
+        // Create competition card
+        const competitionCard = document.createElement('div');
+        competitionCard.className = 'competitions-card';
+        
+        competitionCard.innerHTML = `
+            <img src="${competition.image}" alt="${competition.title}" class="competitions-image">
+            <div class="competitions-content">
+                <h3 class="competitions-title">${competition.title}</h3>
+                <p class="competitions-description">${competition.description}</p>
+            </div>
+        `;
+        
+        CompetitionsContainer.appendChild(competitionCard);
+        
+        // Create dot
+        const dot = document.createElement('div');
+        dot.className = `competitionDot ${index === 0 ? 'active' : ''}`;
+        dot.addEventListener('click', () => goToCompetition(index));
+        dotsContainer.appendChild(dot);
+    });
+}
+
 
 // Carousel Setup
 function setupCarousel() {
@@ -530,9 +574,23 @@ function setupCarousel() {
         updateCarousel();
     });
 
+   //for competitions
+    const prevBtnCompetition = document.getElementById('competitions-prev')
+    const nextBtnCompetition = document.getElementById('competitions-next')
+
+    prevBtnCompetition.addEventListener('click', () => {
+        currentCompetition = currentCompetition > 0 ? currentCompetition - 1 : competitionsData.length - 1;
+        updateCarousel();
+    });
+
+    nextBtnCompetition.addEventListener('click', () => {
+        currentCompetition =currentCompetition< competitionsData.length - 1 ? currentCompetition + 1 : 0;
+        updateCarousel();
+    });
+
     // Auto-scroll carousel
     setInterval(() => {
-        currentArticle = currentArticle < articlesData.length - 1 ? currentArticle + 1 : 0;
+        currentCompetition = currentCompetition < competitionsData.length - 1 ? currentCompetition + 1 : 0;
         updateCarousel();
     }, 5000);
     
@@ -551,6 +609,11 @@ function goToEvent(index) {
 
 function goToArticle(index) {
     currentArticle = index;
+    updateCarousel();
+}
+
+function goToCompetition(index) {
+    currentCompetition = index;
     updateCarousel();
 }
 
@@ -596,6 +659,18 @@ function updateCarousel() {
         dot.classList.toggle('active', index === currentArticle);
     });
 
+        //for competitions
+    const competitionsContainer = document.getElementById('competitions-container');
+    const competitionDots = document.querySelectorAll('.competitionDot');
+    
+    const cardWidthCompetition = 344; // 320px + 24px margin
+    const offsetCompetition = -currentCompetition * cardWidthCompetition;
+    
+    competitionsContainer.style.transform = `translateX(${offsetCompetition}px)`;
+    
+    competitionDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentCompetition);
+    });
 
 }
 

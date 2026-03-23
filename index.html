@@ -39,6 +39,7 @@
                 <a href="#simulations" class="nav-link">Simulations</a>
                 <a href="#projects" class="nav-link">Projects</a>
                 <a href="#articles" class="nav-link">Articles</a>
+                <a href="#competitions" class="nav-link">Competitions</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </div>
 
@@ -266,33 +267,27 @@
              
         </div>
 
-            <!--JS code for populating articles, later to be shifted in app.js file-->
-<!--            <script>
-                fetch("articles.json")
-                .then(res => res.json())
-                .then(data => {
-                    const container = document.getElementById("articles-grid");
-                    data.forEach(article => {
-                    container.innerHTML += `
-                        <div class="article-card">
-                        <img src="${article.thumbnail}" alt="${article.title}">
-                        <h3>${article.title}</h3>
-                        <p>${article.description}</p>
-                        <a href="article.html?id=${article.id}">Read more</a>
-                        </div>
-                    `;
-                        // Create dot
-                        const dot = document.createElement('div');
-                        dot.className = `articleDot ${index === 0 ? 'active' : ''}`;
-                        dot.addEventListener('click', () => goToHighlight(index));
-                        dotsContainer.appendChild(dot);
+      </section>
 
-                    });
-                });
-            </script>
-     </section>
+    <!-- competitions Section -->
+    <section id="competitions" class="competitions-section">
+        <div class="container">
+            <h2 class="section-title">Competitions</h2>
+            <p class="section-subtitle">Upcoming competitions of ELECTROMOS</p>
+            
+            <div class="competitions-carousel" id="competitions-carousel">
+                <div class="competitions-container" id="competitions-container">
+                    <!-- competitions will be populated by JavaScript -->
+                </div>
+                <div class="carousel-nav">
+                    <button class="carousel-btn prev" id="competitions-prev">&lt;</button>
+                    <div class="carousel-dots" id="competitions-dots"></div>
+                    <button class="carousel-btn next" id="competitions-next">&gt;</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
-     -->
 
 <!-- Contact Section -->
 <section id="contact" class="contact-section">
